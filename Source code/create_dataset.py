@@ -1,67 +1,74 @@
 import os
 import pickle
-import mediapipe as mp
 import cv2
+import numpy as np
+import mediapipe as mp
+from mediapipe.tasks import python
+from mediapipe.tasks.python import vision
 
-# Initialize Mediapipe Hands
-mp_hands = mp.solutions.hands
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, 'Data')
+MODEL_DIR = os.path.join(BASE_DIR, 'Model')
+os.makedirs(MODEL_DIR, exist_ok=True)
+TASK_PATH = os.path.join(MODEL_DIR, 'hand_landmarker.task')
 
-hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.3, min_tracking_confidence=0.3)
+# Ensure MediaPipe HandLandmarker model file is present
+if not os.path.exists(TASK_PATH):
+    import urllib.request
+    print("Downloading hand_landmarker.task model...")
+    urllib.request.urlretrieve(
+        "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+        TASK_PATH
+    )
 
-# Define the directory containing the image data
-DATA_DIR = 'D:/Sign Language Convertor/Data'
+base_options = python.BaseOptions(model_asset_path=TASK_PATH)
+options = vision.HandLandmarkerOptions(
+    base_options=base_options,
+    num_hands=2,
+    min_hand_detection_confidence=0.3,
+    min_tracking_confidence=0.3
+)
+detector = vision.HandLandmarker.create_from_options(options)
 
-# Initialize lists to store data and labels
 data = []
 labels = []
 
-# Iterate through each directory and image in the data directory
+if not os.path.exists(DATA_DIR):
+    print(f"Data directory '{DATA_DIR}' not found. Please run collect_imgs.py first.")
+    exit(1)
+
 for dir_ in os.listdir(DATA_DIR):
-    for img_path in os.listdir(os.path.join(DATA_DIR, dir_)):
+    dir_path = os.path.join(DATA_DIR, dir_)
+    if not os.path.isdir(dir_path):
+        continue
 
-        # Temporary list to store hand landmark data for each image
-        data_aux = []   
+    for img_name in os.listdir(dir_path):
+        img_path = os.path.join(dir_path, img_name)
+        img = cv2.imread(img_path)
+        if img is None:
+            continue
 
-        # List to store x & y coordinates of hand landmarks
-        x_ = []  
-        y_ = []  
-
-        # Read the image and convert it to RGB format
-        img = cv2.imread(os.path.join(DATA_DIR, dir_, img_path))
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=img_rgb)
+        results = detector.detect(mp_image)
 
-        results = hands.process(img_rgb)
+        if results.hand_landmarks:
+            for hand_landmarks in results.hand_landmarks:
+                data_aux = []
+                x_ = [lm.x for lm in hand_landmarks]
+                y_ = [lm.y for lm in hand_landmarks]
 
-        # Check if hand landmarks were detected in the image & Iterate through each detected hand
-        if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
-                
-                # Extract x and y coordinates of each hand landmark
-                for i in range(len(hand_landmarks.landmark)):
-                    x = hand_landmarks.landmark[i].x
-                    y = hand_landmarks.landmark[i].y
+                for lm in hand_landmarks:
+                    data_aux.append(lm.x - min(x_))
+                    data_aux.append(lm.y - min(y_))
 
-                    # Store x and y coordinates in separate lists
-                    x_.append(x)
-                    y_.append(y)
+                data.append(data_aux)
+                labels.append(dir_)
 
-                # Normalize coordinates by subtracting the minimum values
-                for i in range(len(hand_landmarks.landmark)):
-                    x = hand_landmarks.landmark[i].x
-                    y = hand_landmarks.landmark[i].y
-                    data_aux.append(x - min(x_))
-                    data_aux.append(y - min(y_))
-
-            # Append the hand landmark data and corresponding label to the lists
-            data.append(data_aux)
-            labels.append(dir_)
-
-# Save the data and labels to a pickle file
+output_pickle = os.path.join(MODEL_DIR, 'data_final.pickle')
 try:
-    with open('D:/Sign Language Convertor/Model/data10.pickle', 'wb') as f:
+    with open(output_pickle, 'wb') as f:
         pickle.dump({'data': data, 'labels': labels}, f)
-    print("Data saved successfully.")
+    print(f"Dataset successfully created with {len(data)} samples saved to: {output_pickle}")
 except Exception as e:
-    print("Error occurred while saving the data:", e)
+    print(f"Error occurred while saving dataset: {e}")

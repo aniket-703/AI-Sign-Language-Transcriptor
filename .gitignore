@@ -1,0 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.backup
+
+# Output data
+Output/output.txt
+Output/corrected_sentence.txt
+
+# OS metadata
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# Temporary uploads / tests
+test_*.png
+test_*.jpg

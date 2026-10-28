@@ -1,309 +1,86 @@
-<!--
-Hey, thanks for using the awesome-readme-template template.  
-If you have any enhancements, then fork this project and create a pull request 
-or just open an issue with the label "enhancement".
+# AI Sign Language Detector & Transcriptor 🤟💬
 
-Don't forget to give this project a star for additional support ;)
-Maybe you can mention me or this repo in the acknowledgements too
--->
-<div align="center">
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10.x-green.svg)](https://developers.google.com/mediapipe)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-99.93%25%20Accuracy-orange.svg)](https://scikit-learn.org/)
+[![CustomTkinter](https://img.shields.io/badge/GUI-CustomTkinter-purple.svg)](https://customtkinter.tomschimansky.com/)
 
-  <img src="images/logo.ico" alt="logo" width="100" height="auto" />
-  <h1>Sign Language Conversion</h1>
-  
-  <p>
-    A convertor which helps an individual to communicate with dumb and deaf.
-  </p>
-  
-  
-<!-- Badges -->
-<p>
-  <a href="https://github.com/aniket-703/Sign-language-conversion/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/aniket-703/Sign-language-conversion" alt="contributors" />
-  </a>
-  <a href="">
-    <img src="https://img.shields.io/github/last-commit/aniket-703/Sign-language-conversion" alt="last update" />
-  </a>
-  <a href="https://github.com/aniket-703/Sign-language-conversion/network/members">
-    <img src="https://img.shields.io/github/forks/aniket-703/Sign-language-conversion" alt="forks" />
-  </a>
-  <a href="https://github.com/aniket-703/Sign-language-conversion/stargazers">
-    <img src="https://img.shields.io/github/stars/aniket-703/Sign-language-conversion" alt="stars" />
-  </a>
-  <a href="https://github.com/aniket-703/Sign-language-conversion/issues/">
-    <img src="https://img.shields.io/github/issues/aniket-703/Sign-language-conversion" alt="open issues" />
-  </a>
-  <a href="https://github.com/aniket-703/Sign-language-conversion/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/aniket-703/Sign-language-conversion.svg" alt="license" />
-  </a>
-</p>
-   
-<h4>
-    <a href="https://github.com/aniket-703/Sign-language-conversion/">View Demo</a>
-  <span> · </span>
-    <a href="https://github.com/aniket-703/Sign-language-conversion">Documentation</a>
-  <span> · </span>
-    <a href="https://github.com/aniket-703/Sign-language-conversion/issues/">Report Bug</a>
-  <span> · </span>
-    <a href="https://github.com/aniket-703/Sign-language-conversion/issues/">Request Feature</a>
-  </h4>
-</div>
+A real-time, **100% native desktop application** that converts **Sign Language Gestures (Indian / American Sign Language)** into **Text** and **Spoken Audio**.
 
-<br />
+---
 
-<!-- Table of Contents -->
-# :notebook_with_decorative_cover: Table of Contents
+## 📸 Application Screenshots
 
-- [About the Project](#star2-about-the-project)
-  * [Screenshots](#camera-screenshots)
-  * [Tech Stack](#space_invader-tech-stack)
-  * [Features](#dart-features)
-  * [Color Reference](#art-color-reference)
-  * [Environment Variables](#key-environment-variables)
-- [Getting Started](#toolbox-getting-started)
-  * [Prerequisites](#bangbang-prerequisites)
-  * [Installation](#gear-installation)
-  * [Running Tests](#test_tube-running-tests)
-  * [Run Locally](#running-run-locally)
-  * [Deployment](#triangular_flag_on_post-deployment)
-- [Usage](#eyes-usage)
-- [Roadmap](#compass-roadmap)
-- [Contributing](#wave-contributing)
-  * [Code of Conduct](#scroll-code-of-conduct)
-- [FAQ](#grey_question-faq)
-- [License](#warning-license)
-- [Contact](#handshake-contact)
-- [Acknowledgements](#gem-acknowledgements)
+### Desktop GUI Dashboard
+![AI Sign Language Transcriptor GUI](images/screenshots/desktop_gui_main.png)
 
-  
+### Sign Language Reference Chart (37 Gestures)
+![Sign Language Reference Chart](images/screenshots/signs_reference_chart.png)
 
-<!-- About the Project -->
-## :star2: About the Project
+---
 
+## ✨ Features
 
-<!-- Screenshots -->
-### :camera: Screenshots
+- **100% Native Desktop Experience**: Built with CustomTkinter for a fast, responsive, and modern dark-mode interface. Zero browser dependencies, no local web server required.
+- **Real-Time Hand Landmark Tracking**: Powered by MediaPipe 21-point hand tracking with high FPS and sub-pixel accuracy.
+- **Smart Camera Auto-Detection**: Automatically identifies active hardware webcam devices (`Camera 1` / `Camera 2`) and provides seamless runtime camera switching.
+- **99.93% Classification Accuracy**: Trained across 37 classes (A–Z letters, 0–9 digits, and Next/Space sign) with 7,387 samples.
+- **Intelligent Word Formation & Spell Checking**: Uses PyEnchant English dictionary with custom vocabulary to auto-correct typos on every 'Next' gesture.
+- **Audio Output (Text-To-Speech)**: Integrated offline `pyttsx3` speech engine reads out formed words and sentences aloud in a dedicated thread.
+- **Clipboard & File Export**: One-click copy to Windows clipboard or save to output text files.
 
-<div align="center"> 
-  <img src="https://placehold.co/600x400?text=Your+Screenshot+here" alt="screenshot" />
-</div>
+---
 
+## 🚀 Quick Start
 
-<!-- TechStack -->
-### :space_invader: Tech Stack
-
-<details>
-  <summary>Client</summary>
-  <ul>
-    <li><a href="https://www.typescriptlang.org/">Typescript</a></li>
-    <li><a href="https://nextjs.org/">Next.js</a></li>
-    <li><a href="https://reactjs.org/">React.js</a></li>
-    <li><a href="https://tailwindcss.com/">TailwindCSS</a></li>
-  </ul>
-</details>
-
-<details>
-  <summary>Server</summary>
-  <ul>
-    <li><a href="https://www.typescriptlang.org/">Typescript</a></li>
-    <li><a href="https://expressjs.com/">Express.js</a></li>
-    <li><a href="https://go.dev/">Golang</a></li>
-    <li><a href="https://nestjs.com/">Nest.js</a></li>
-    <li><a href="https://socket.io/">SocketIO</a></li>
-    <li><a href="https://www.prisma.io/">Prisma</a></li>    
-    <li><a href="https://www.apollographql.com/">Apollo</a></li>
-    <li><a href="https://graphql.org/">GraphQL</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>Database</summary>
-  <ul>
-    <li><a href="https://www.mysql.com/">MySQL</a></li>
-    <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
-    <li><a href="https://redis.io/">Redis</a></li>
-    <li><a href="https://neo4j.com/">Neo4j</a></li>
-    <li><a href="https://www.mongodb.com/">MongoDB</a></li>
-  </ul>
-</details>
-
-<details>
-<summary>DevOps</summary>
-  <ul>
-    <li><a href="https://www.docker.com/">Docker</a></li>
-    <li><a href="https://www.jenkins.io/">Jenkins</a></li>
-    <li><a href="https://circleci.com/">CircleCLI</a></li>
-  </ul>
-</details>
-
-<!-- Features -->
-### :dart: Features
-
-- Feature 1
-- Feature 2
-- Feature 3
-
-<!-- Color Reference -->
-### :art: Color Reference
-
-| Color             | Hex                                                                |
-| ----------------- | ------------------------------------------------------------------ |
-| Primary Color | ![#222831](https://via.placeholder.com/10/222831?text=+) #222831 |
-| Secondary Color | ![#393E46](https://via.placeholder.com/10/393E46?text=+) #393E46 |
-| Accent Color | ![#00ADB5](https://via.placeholder.com/10/00ADB5?text=+) #00ADB5 |
-| Text Color | ![#EEEEEE](https://via.placeholder.com/10/EEEEEE?text=+) #EEEEEE |
-
-
-<!-- Env Variables -->
-### :key: Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
-
-<!-- Getting Started -->
-## 	:toolbox: Getting Started
-
-<!-- Prerequisites -->
-### :bangbang: Prerequisites
-
-This project uses Yarn as package manager
-
+### 1. Installation
+Ensure Python 3.10+ is installed, then install dependencies:
 ```bash
- npm install --global yarn
+pip install -r requirements.txt
 ```
 
-<!-- Installation -->
-### :gear: Installation
-
-Install my-project with npm
-
+### 2. Launch the Application
+Double-click **`start.bat`** or run:
 ```bash
-  yarn install my-project
-  cd my-project
-```
-   
-<!-- Running Tests -->
-### :test_tube: Running Tests
-
-To run tests, run the following command
-
-```bash
-  yarn test test
+python run.py
 ```
 
-<!-- Run Locally -->
-### :running: Run Locally
+---
 
-Clone the project
+## 📁 Project Structure
 
-```bash
-  git clone https://github.com/Louis3797/awesome-readme-template.git
+```
+Sign-language-conversion-main/
+├── Model/
+│   ├── data_final.pickle           # 7,387 sample landmark dataset
+│   ├── model_final.p               # Trained Random Forest classifier (99.93% accuracy)
+│   └── hand_landmarker.task        # MediaPipe Vision Landmarker task model
+├── Source code/
+│   ├── Final_detector.py           # Clean Modern Desktop GUI application
+│   ├── train_classifier.py         # Model training pipeline
+│   ├── create_dataset.py           # Feature extraction & dataset builder
+│   └── collect_imgs.py             # Image dataset collection tool
+├── images/
+│   ├── symbol.png                  # Master reference chart
+│   ├── symbol images/              # Individual sign reference photos
+│   └── screenshots/                # Application preview screenshots
+├── run.py                          # Unified desktop launcher
+├── start.bat                       # One-click Windows runner
+└── requirements.txt                # Python dependencies
 ```
 
-Go to the project directory
+---
 
-```bash
-  cd my-project
-```
+## 🎯 How It Works
 
-Install dependencies
+1. **Sign Detection**: The camera captures your hand and MediaPipe extracts 21 landmark coordinate pairs `(x, y)`.
+2. **Feature Engineering**: Coordinates are normalized by subtracting bounding minimums, and squared terms are computed to yield an 84-dimensional feature vector.
+3. **Classification**: The Random Forest model predicts the letter/digit with high confidence.
+4. **Hold Confirmation**: Holding a sign steady for the configured duration (default: 1.8s) appends the character to the active word.
+5. **Word & Sentence Building**: Making the **'Next'** sign runs English spell-checking via PyEnchant, corrects typos, appends the word to the sentence, and resets the word buffer.
+6. **Speech Synthesis**: Clicking **Speak** reads the generated sentence aloud!
 
-```bash
-  yarn install
-```
+---
 
-Start the server
-
-```bash
-  yarn start
-```
-
-
-<!-- Deployment -->
-### :triangular_flag_on_post: Deployment
-
-To deploy this project run
-
-```bash
-  yarn deploy
-```
-
-
-<!-- Usage -->
-## :eyes: Usage
-
-Use this space to tell a little more about your project and how it can be used. Show additional screenshots, code samples, demos or link to other resources.
-
-
-```javascript
-import Component from 'my-project'
-
-function App() {
-  return <Component />
-}
-```
-
-<!-- Roadmap -->
-## :compass: Roadmap
-
-* [x] Todo 1
-* [ ] Todo 2
-
-
-<!-- Contributing -->
-## :wave: Contributing
-
-<a href="https://github.com/Louis3797/awesome-readme-template/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Louis3797/awesome-readme-template" />
-</a>
-
-
-Contributions are always welcome!
-
-See `contributing.md` for ways to get started.
-
-
-<!-- Code of Conduct -->
-### :scroll: Code of Conduct
-
-Please read the [Code of Conduct](https://github.com/Louis3797/awesome-readme-template/blob/master/CODE_OF_CONDUCT.md)
-
-<!-- FAQ -->
-## :grey_question: FAQ
-
-- Question 1
-
-  + Answer 1
-
-- Question 2
-
-  + Answer 2
-
-
-<!-- License -->
-## :warning: License
-
-Distributed under the no License. See LICENSE.txt for more information.
-
-
-<!-- Contact -->
-## :handshake: Contact
-
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
-Project Link: [https://github.com/Louis3797/awesome-readme-template](https://github.com/Louis3797/awesome-readme-template)
-
-
-<!-- Acknowledgments -->
-## :gem: Acknowledgements
-
-Use this section to mention useful resources and libraries that you have used in your projects.
-
- - [Shields.io](https://shields.io/)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [Emoji Cheat Sheet](https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md#travel--places)
- - [Readme Template](https://github.com/othneildrew/Best-README-Template)
-
+## 📜 License
+Open source project created by **Aniket Sharma**.

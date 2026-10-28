@@ -1,8 +1,9 @@
 import os
 import cv2
 
-# Define the directory where the images will be saved
-DATA_DIR = 'D:/Sign Language Convertor/Data'
+# Define directory dynamically relative to project root
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, 'Data')
 
 # Create the directory if it doesn't exist
 if not os.path.exists(DATA_DIR):

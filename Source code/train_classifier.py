@@ -1,47 +1,51 @@
+import os
 import pickle 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report
 
-# Loading the preprocessed data from a pickle file
-data_dict = pickle.load(open('D:/Sign Language Convertor/Model/data10.pickle', 'rb'))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_DIR = os.path.join(BASE_DIR, 'Model')
+data_path = os.path.join(MODEL_DIR, 'data_final.pickle')
 
-# Finding the maximum length of sequences in the data
-max_length = max(len(seq) for seq in data_dict['data'])
+if not os.path.exists(data_path):
+    print(f"Dataset file '{data_path}' not found.")
+    exit(1)
 
-# Pading sequences with zeros to make them all the same length
-padded_data = [seq + [0] * (max_length - len(seq)) for seq in data_dict['data']]
+with open(data_path, 'rb') as f:
+    data_dict = pickle.load(f)
 
-# Converting the data and labels to NumPy arrays
-data = np.asarray(padded_data)
+# Process features to include squared terms (84 features)
+processed_data = []
+for seq in data_dict['data']:
+    item = list(seq)
+    if len(item) == 42:
+        item.extend([x**2 for x in item])
+    elif len(item) < 84:
+        item = item + [0] * (84 - len(item))
+    elif len(item) > 84:
+        item = item[:84]
+    processed_data.append(item)
+
+data = np.asarray(processed_data)
 labels = np.asarray(data_dict['labels'])
 
-# Splitting the data into training and testing sets
-x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.2, shuffle=True, stratify=labels)
+print(f"Training dataset shape: {data.shape}, Total samples: {len(labels)}")
 
-# Normalize/Scale the data
-scaler = StandardScaler()
-x_train_scaled = scaler.fit_transform(x_train)
-x_test_scaled = scaler.transform(x_test)
+x_train, x_test, y_train, y_test = train_test_split(
+    data, labels, test_size=0.2, shuffle=True, stratify=labels, random_state=42
+)
 
-# Creating a Random Forest classifier model
-model = RandomForestClassifier()
-
-# Training the model using the training data
+model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(x_train, y_train)
 
-# Making predictions on the test data
 y_predict = model.predict(x_test)
+score = accuracy_score(y_test, y_predict)
+print(f"Accuracy: {score * 100:.2f}% of test samples classified correctly!")
 
-# Calculating the accuracy of the model
-score = accuracy_score(y_predict, y_test)
-
-# Printing the accuracy of the model
-print('{}% of samples were classified correctly!'.format(score * 100))
-
-# Saving the model
-with open('D:/Sign Language Convertor/Model/model10.p', 'wb') as f:
+model_path = os.path.join(MODEL_DIR, 'model_final.p')
+with open(model_path, 'wb') as f:
     pickle.dump({'model': model}, f)
-f.close()
+
+print(f"Model saved successfully to: {model_path}")

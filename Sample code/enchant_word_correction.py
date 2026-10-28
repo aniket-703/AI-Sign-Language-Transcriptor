@@ -31,8 +31,11 @@ def correct_sentence(user_input):
     # Print the corrected sentence
     print("Corrected sentence:", corrected_sentence)
 
-    # Write the corrected sentence to a file
-    with open("D:/Sign Language Convertor/Output/corrected_sentence.txt", "w") as file:
+    import os
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    output_path = os.path.join(BASE_DIR, "Output", "corrected_sentence.txt")
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as file:
         file.write(corrected_sentence)
 
 if __name__ == "__main__":
