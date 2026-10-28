@@ -50,7 +50,7 @@ python run.py
 ## 📁 Project Structure
 
 ```
-Sign-language-conversion-main/
+AI-Sign-Language-Transcriptor/
 ├── Model/
 │   ├── data_final.pickle           # 7,387 sample landmark dataset
 │   ├── model_final.p               # Trained Random Forest classifier (99.93% accuracy)
